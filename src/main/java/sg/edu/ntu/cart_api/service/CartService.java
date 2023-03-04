@@ -32,7 +32,7 @@ public class CartService {
     public CartSummary showCartSummaryOfUser(Integer userid) {
        Optional<List<Cart>> cartsOfUser = cartRepo.findByUserId(userid);
        if(cartsOfUser.isEmpty()) {
-           throw new CartNotFoundException("The cart summary belonging to uderid " + userid + " not found");
+           throw new CartNotFoundException("The cart summary belonging to userid " + userid + " not found");
        }
        List<Cart> cartsFound = cartsOfUser.get();
        int sum = 0;
@@ -85,6 +85,37 @@ public class CartService {
             throw new UserNotFoundException("The cart with product Id " + id + " cannot be found!");
         }
         return cart.get();
+    }
+
+    // Optional Methods for testing
+
+    // Add One
+    public void incrementByOne(Integer userid, Integer productId) {
+        Optional<Cart> findCart = cartRepo.findByUserIdAndProductId(userid, productId);
+        if(findCart.isEmpty()) {
+            Product product = ProductService
+                    .unwrapProduct(productRepo.findById(productId), productId);
+            Users user = UserService.unwrapUser(userRepo.findById(userid), userid);
+            Cart newCart = new Cart(1, product, user);
+            cartRepo.save(newCart);
+        } else {
+            Cart found = findCart.get();
+            found.setQuantity(findCart.get().getQuantity() + 1);
+            cartRepo.save(found);
+        }
+    }
+
+    // Subtract one
+    public void decrementByOne(Integer userid, Integer productId) {
+        Cart cart = unwrapCart(cartRepo.findByUserIdAndProductId(userid, productId), productId);
+        int quantity = cart.getQuantity() > 0 ? cart.getQuantity() - 1 : 0;
+        if(quantity <= 0) {
+            cartRepo.delete(cart);
+        } else {
+            cart.setQuantity(quantity);
+            cartRepo.save(cart);
+        }
+
     }
 
 
