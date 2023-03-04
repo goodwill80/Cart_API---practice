@@ -82,7 +82,7 @@ public class CartService {
     // Check for Null exception
     public static Cart unwrapCart(Optional<Cart> cart, Integer id) {
         if(cart.isEmpty()) {
-            throw new UserNotFoundException("The cart with product Id " + id + " cannot be found!");
+            throw new CartNotFoundException("The cart with product Id " + id + " cannot be found!");
         }
         return cart.get();
     }

@@ -26,5 +26,17 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @PostMapping("/addone")
+    public ResponseEntity<HttpStatus> addOne(@RequestParam Integer userid, @RequestParam Integer productid) {
+        cartService.incrementByOne(userid, productid);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/minusone")
+    public ResponseEntity<HttpStatus> subtractOne(@RequestParam Integer userid, @RequestParam Integer productid) {
+        cartService.decrementByOne(userid, productid);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
 
 }
