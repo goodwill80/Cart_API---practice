@@ -3,6 +3,8 @@ package sg.edu.ntu.cart_api.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sg.edu.ntu.cart_api.DataObjects.CartItem;
+import sg.edu.ntu.cart_api.DataObjects.CartSummary;
+import sg.edu.ntu.cart_api.Exceptions.CartNotFoundException;
 import sg.edu.ntu.cart_api.Exceptions.UserNotFoundException;
 import sg.edu.ntu.cart_api.entity.Cart;
 import sg.edu.ntu.cart_api.entity.Product;
@@ -11,6 +13,7 @@ import sg.edu.ntu.cart_api.repository.CartRepository;
 import sg.edu.ntu.cart_api.repository.ProductRepository;
 import sg.edu.ntu.cart_api.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +29,20 @@ public class CartService {
     ProductRepository productRepo;
 
     // Display Full Cart Summary
-
+    public CartSummary showCartSummaryOfUser(Integer userid) {
+       Optional<List<Cart>> cartsOfUser = cartRepo.findByUserId(userid);
+       if(cartsOfUser.isEmpty()) {
+           throw new CartNotFoundException("The cart summary belonging to uderid " + userid + " not found");
+       }
+       List<Cart> cartsFound = cartsOfUser.get();
+       int sum = 0;
+       float cost = 0f;
+       for(Cart cart : cartsFound) {
+           sum += cart.getQuantity();
+           cost += (cart.getQuantity() * cart.getProduct().getPrice());
+       }
+       return new CartSummary(sum, cost, cartsFound);
+    }
 
 
     // Update Cart - Add, Subtract and delete

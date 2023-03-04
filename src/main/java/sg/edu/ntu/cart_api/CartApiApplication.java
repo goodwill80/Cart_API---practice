@@ -36,25 +36,25 @@ public class CartApiApplication {
 		return new MinimumPayableCheckHelper(minimumPurchase);
 	}
 
-	@PostConstruct
-	public void seeder() {
-
-		List<Product> productSeeder = List.of(
-				new Product("iPhone10", "latest apple phone",  999.00f),
-		   		new Product("Samsung Galaxy", "latest galaxy phone",  888.00f),
-				new Product("MiPhone", "latest Mi phone",  777.00f)
-		);
-
-		List<Users> userSeeder = List.of(
-				new Users("oliver@gmail.com", "password"),
-				new Users("jon@gmail.com", "password"),
-				new Users("dave@gmail.com", "password")
-		);
-
-		for(int i = 0; i < productSeeder.size(); i++) {
-			productRepo.save(productSeeder.get(i));
-			userRepo.save(userSeeder.get(i));
-		}
-	}
+//	@PostConstruct
+//	public void seeder() {
+//
+//		List<Product> productSeeder = List.of(
+//				new Product("iPhone10", "latest apple phone",  999.00f),
+//		   		new Product("Samsung Galaxy", "latest galaxy phone",  888.00f),
+//				new Product("MiPhone", "latest Mi phone",  777.00f)
+//		);
+//
+//		List<Users> userSeeder = List.of(
+//				new Users("oliver@gmail.com", "password"),
+//				new Users("jon@gmail.com", "password"),
+//				new Users("dave@gmail.com", "password")
+//		);
+//
+//		for(int i = 0; i < productSeeder.size(); i++) {
+//			productRepo.save(productSeeder.get(i));
+//			userRepo.save(userSeeder.get(i));
+//		}
+//	}
 
 }

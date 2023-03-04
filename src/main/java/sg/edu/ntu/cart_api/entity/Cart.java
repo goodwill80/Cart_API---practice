@@ -1,5 +1,7 @@
 package sg.edu.ntu.cart_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class Cart {
     private Product product;
 
     // Bidirectional relation
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users user;

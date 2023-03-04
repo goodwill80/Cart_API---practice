@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.ntu.cart_api.DataObjects.CartItem;
+import sg.edu.ntu.cart_api.DataObjects.CartSummary;
 import sg.edu.ntu.cart_api.service.CartService;
 
 @RestController
@@ -15,8 +16,8 @@ public class CartController {
     CartService cartService;
 
     @GetMapping
-    public ResponseEntity<Object> getAllCartItemsOfUser(@RequestParam Integer userid) {
-       return null;
+    public ResponseEntity<CartSummary> getAllCartItemsOfUser(@RequestParam Integer userid) {
+        return new ResponseEntity<>(cartService.showCartSummaryOfUser(userid), HttpStatus.OK);
     }
 
     @PostMapping
