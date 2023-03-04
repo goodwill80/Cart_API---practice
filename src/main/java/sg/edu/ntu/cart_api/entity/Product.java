@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -29,12 +30,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @NotBlank
     @Column(name = "name", nullable = false)
     String name;
 
     @Column (name = "description")
     String description;
 
+    @NotBlank
     @Column (name = "price")
     float price = 0f;
 

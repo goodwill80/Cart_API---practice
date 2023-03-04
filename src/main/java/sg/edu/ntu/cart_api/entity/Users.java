@@ -1,6 +1,7 @@
 package sg.edu.ntu.cart_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,9 +16,11 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     @Column(name = "email", nullable = false)
     private String email;
 
+    @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
 
