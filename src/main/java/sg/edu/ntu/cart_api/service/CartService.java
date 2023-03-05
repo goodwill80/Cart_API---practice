@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import sg.edu.ntu.cart_api.DataObjects.CartItem;
 import sg.edu.ntu.cart_api.DataObjects.CartSummary;
 import sg.edu.ntu.cart_api.Exceptions.CartNotFoundException;
-import sg.edu.ntu.cart_api.Exceptions.UserNotFoundException;
 import sg.edu.ntu.cart_api.entity.Cart;
 import sg.edu.ntu.cart_api.entity.Product;
 import sg.edu.ntu.cart_api.entity.Users;
@@ -45,7 +44,7 @@ public class CartService {
     }
 
 
-    // Update Cart - Add, Subtract and delete
+    // Update Cart -  Replacement method, subtraction and addition handle in client/react
     public void updateCart(CartItem cartItem) {
         Optional<Cart> findCart = cartRepo.findByUserIdAndProductId(
                 cartItem.getUserid(), cartItem.getProductId()
@@ -68,6 +67,41 @@ public class CartService {
             Cart newCart = new Cart(cartItem.getQuantity(), product, user);
             cartRepo.save(newCart);
         }
+    }
+
+    // updateCart method 2 - Direct Add and Delete to existing or new quantity
+    private void updateCart (CartItem cartItem, String actionparam) {
+        Optional<Cart> findCart = cartRepo.findByUserIdAndProductId(
+                cartItem.getUserid(), cartItem.getProductId()
+        );
+       // For existing cart records
+       if(findCart.isPresent()) {
+           Cart cart = actionToUpdate(findCart.get(), cartItem, actionparam);
+           if(cart.getQuantity() <= 0) {
+               cartRepo.delete(findCart.get());
+           }
+           cartRepo.save(cart);
+       }
+
+       // For new cart records
+        Product product = ProductService.unwrapProduct(productRepo
+                .findById(cartItem.getProductId()), cartItem.getProductId());
+        Users user = UserService.unwrapUser(
+                userRepo.findById(cartItem.getUserid()), cartItem.getUserid());
+        Cart newCart = new Cart(0, product, user);
+        Cart updatedNewCart = actionToUpdate(newCart, cartItem, actionparam);
+        cartRepo.save(updatedNewCart);
+    }
+
+    // Update helper
+    private Cart actionToUpdate(Cart target, CartItem dto, String action) {
+        if(action.equalsIgnoreCase("add")) {
+            target.setQuantity(target.getQuantity() + dto.getQuantity());
+            return target;
+        }
+
+        target.setQuantity(target.getQuantity() - dto.getQuantity());
+        return target;
     }
 
     // Remove cart from table if the update quantity is zero
