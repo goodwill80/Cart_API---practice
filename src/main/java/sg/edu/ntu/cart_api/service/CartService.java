@@ -44,7 +44,7 @@ public class CartService {
     }
 
 
-    // Update Cart -  Replacement method, subtraction and addition handle in client/react
+    // Update Cart  -  Replacement method, subtraction and addition handle in client/react
     public void updateCart(CartItem cartItem) {
         Optional<Cart> findCart = cartRepo.findByUserIdAndProductId(
                 cartItem.getUserid(), cartItem.getProductId()
@@ -90,6 +90,7 @@ public class CartService {
                 userRepo.findById(cartItem.getUserid()), cartItem.getUserid());
         Cart newCart = new Cart(0, product, user);
         Cart updatedNewCart = actionToUpdate(newCart, cartItem, actionparam);
+        if(updatedNewCart.getQuantity() == 0) return;
         cartRepo.save(updatedNewCart);
     }
 
