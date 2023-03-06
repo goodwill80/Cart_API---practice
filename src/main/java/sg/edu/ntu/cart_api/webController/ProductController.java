@@ -102,4 +102,26 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+            // @RequestMapping(value="/{id}", method = RequestMethod.PUT)
+    // public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Integer id){
+    //     Optional<Product> currentProduct = repo.findById(id); // Optional is a utility class to handle null
+    //     if(currentProduct.isPresent()){ // Check if the expected object is present
+    //         try{
+    //             Product p = currentProduct.get(); // Get the object - Product
+
+    //             // Update the fetched product with name, description, price sent via Request Body
+    //             p.setName(product.getName());
+    //             p.setDescription(product.getDescription());
+    //             p.setPrice(product.getPrice());
+
+    //             p = repo.save(p); // When "id" is present, .save() will perform update operation.
+    //             return ResponseEntity.ok().body(p);
+    //         }catch(Exception e){
+    //             e.printStackTrace();
+    //             return ResponseEntity.badRequest().build();
+    //         }            
+    //     }
+    //     return ResponseEntity.notFound().build();
+    // }
+
 }
